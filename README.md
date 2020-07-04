@@ -1,7 +1,7 @@
 # make-plex-server-pi4
-Repository to store scripts and docker compose files used to set up a Plex media server on my Raspberry Pi 4.
+Repository to store scripts and docker compose files used to set up a Plex media server on my Raspberry Pi 4. Media is downloaded to the server through a torrent client that routes traffice through a VPN.
 
-Assumed set-up is a Pi 4, with external drive to store media for Plex. Plex is run from a Docker container. Another Docker app holds 2 containers; a nordvpn container that routes all traffic through VPN, and a transmission container that uses this VPN container's network; downloading media to the external drive.
+Assumed set-up is a Pi 4, with external drive to store media. Plex is run from a Docker container. Another Docker app holds 2 containers; a nordvpn container that routes all traffic through VPN, and a transmission container that uses this VPN container's network; downloading media to the external drive.
 
 ## scripts
 
@@ -11,14 +11,14 @@ Shell scripts.
 
 The script assumes the mount directory must be created.
 
-To use, amend the **MOUNTPOINT** variable to the desired directory, and replace **[UUID]** with the UUID of the hard drive being mounted.
+To use, amend the **MOUNTPOINT** variable to the desired directory, and replace **[UUID]** with the UUID of the external hard drive.
 
-**install-docker.sh** installs Docker and docker compose for building images and running containers. This uses docker's helper script, so should just run without any amendment.
+**install-docker.sh** installs Docker and docker-compose for building images and running containers. This uses docker's helper script, so should just run without any amendment.
 
 ## plex-app & torrent-app
 2 docker compose apps.
 
-Both compose files use the ${} syntax to substitute variables defined in a .env file in the same directory as the .yml file. This is to avoid sharing passwords or other information publicly (hence the .gitignore contents).
+Both compose files use the ${} syntax to substitute variables defined in a '.env' file in the same directory as the .yml file. This is to avoid sharing passwords or other information publicly (hence the .gitignore contents).
 
 See [this guide](https://vsupalov.com/docker-arg-env-variable-guide/#the-dot-env-file-env) for more on this syntax.
 
