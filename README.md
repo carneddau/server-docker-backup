@@ -1,7 +1,9 @@
 # make-plex-server-pi4
 Repository to store scripts and docker compose files used to set up a Plex media server on my Raspberry Pi 4. Media is downloaded to the server through a torrent client that routes traffice through a VPN.
 
-Assumed set-up is a Pi 4, with external drive to store media. Plex is run from a Docker container. Another Docker app holds 2 containers; a nordvpn container that routes all traffic through VPN, and a transmission container that uses this VPN container's network; downloading media to the external drive.
+Assumed set-up is a Pi 4, with external drive to store media. Plex is run from a Docker container. Another Docker app holds 2 containers; a NordVPN container that routes all traffic through VPN, and a transmission container that uses this VPN container's network; downloading media to the external drive.
+
+**Note:** A NordVPN client is assumed here, but the but the torrent client in no way relies on it - the torrent app as written here just uses the vpn container's network. Lots of images exist for openvpn clients, so feel free to fork and substitute!
 
 ## scripts
 
