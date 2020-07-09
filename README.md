@@ -1,3 +1,5 @@
+**Note:** I do not condone piracy; there are many sources of torrent-downloadable media in the [public domain](https://www.publicdomaintorrents.info/)!
+
 # make-plex-server-pi4
 Repository to store scripts and docker compose files used to set up a Plex media server on my Raspberry Pi 4. Media is downloaded to the server through a torrent client that routes traffice through a VPN.
 
