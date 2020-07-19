@@ -3,6 +3,7 @@ services:
   vpn:
     image: bubuntux/nordvpn
     network_mode: bridge        # Required
+    container_name: nordvpn
     cap_add:
       - NET_ADMIN               # Required
       - SYS_MODULE              # Required for TECHNOLOGY=NordLynx
@@ -11,25 +12,27 @@ services:
     devices:
       - /dev/net/tun            # Required
     environment:                # Review https://github.com/bubuntux/nordvpn#environment-variables
-      - USER=${email}     # Required
-      - PASS=${password}         # Required
+      - USER=${email}
+      - PASS=${password}
       - CONNECT=United_Kingdom
       - TECHNOLOGY=NordLynx
-      - NETWORK=192.168.1.0/24 
+      - NETWORK=192.168.1.0/24
+      - TZ=Europe/London
+      - DNS=${server_ip} 
     ports:
       - 8080:8080
       - 9091:9091
       - 51413:51413
       - 51413:51413/udp
-      
+    restart: unless-stopped
   transmission:
     image: linuxserver/transmission
     network_mode: service:vpn
+    container_name: torrent
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/London
-#      - TRANSMISSION_WEB_HOME=/combustion-release/ #optional
       - USER=admin
       - PASS=${torrent_password}
     volumes:
@@ -38,6 +41,8 @@ services:
       - ${mount_point}/transwatch:/watch
       - ${mount_point}/plextv:/plextv
       - ${mount_point}/plexmovies:/plexmovies
+    depends_on:
+      - vpn
     restart: unless-stopped
 
 # The torrent service will be available at https://localhost:9091/ from pi, or anywhere inside the local network http://192.168.1.xxx:9091

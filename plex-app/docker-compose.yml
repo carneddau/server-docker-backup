@@ -3,16 +3,26 @@ services:
   plex:
     image: linuxserver/plex
     container_name: plex
-    network_mode: host
+    network_mode: bridge
     environment:
       - PUID=1000
       - PGID=1000
-#      - VERSION=docker
-#      - UMASK_SET=022 #optional
-#      - PLEX_CLAIM= #optional
+      - VERSION=docker
+      - UMASK_SET=022
+#      - PLEX_CLAIM=${claim_token}
     volumes:
       - ${mount_point}/plexconfig:/config
       - ${mount_point}/plextv:/tv
       - ${mount_point}/plexmovies:/movies
       - ${mount_point}/downloads:/transdownloads
+    ports:
+      - 32400:32400
+      - 1900:1900/udp
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+      - 32469:32469
+    dns:
+      - ${server_ip}
     restart: unless-stopped
