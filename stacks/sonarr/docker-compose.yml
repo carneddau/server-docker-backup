@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  sonarr:
+    image: ghcr.io/linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1002
+      - TZ=Europe/London
+      - UMASK_SET=002
+    volumes:
+      - ${DOCKER_DIR}/sonarr/config:/config
+      - ${MOUNT_POINT}/data_root:/data_root
+    ports:
+      - 8989:8989
+    networks:
+      - download
+    restart: unless-stopped
+networks:
+  download:
+    name: download

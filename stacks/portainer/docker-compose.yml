@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  portainer:
+    container_name: portainer
+    image: index.docker.io/portainer/portainer-ce:latest
+    command: -H unix:///var/run/docker.sock
+    restart: unless-stopped
+    ports:
+      - 9000:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DOCKER_DIR}/portainer/data:/data

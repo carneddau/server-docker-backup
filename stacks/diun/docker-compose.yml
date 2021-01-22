@@ -1,0 +1,24 @@
+version: "3.5"
+
+services:
+  diun:
+    image: ghcr.io/crazy-max/diun:latest
+    container_name: diun
+    volumes:
+      - ${DOCKER_DIR}/diun/data:/data
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      - "TZ=Europe/London"
+      - "LOG_LEVEL=info"
+      - "LOG_JSON=false"
+      - "DIUN_WATCH_WORKERS=20"
+      - "DIUN_WATCH_SCHEDULE=* */6 * * *"
+      - "DIUN_PROVIDERS_DOCKER=true"
+      - "DIUN_PROVIDERS_DOCKER_WATCHSTOPPED=true"
+      - "DIUN_NOTIF_DISCORD_WEBHOOKURL=${DIUN_NOTIF_DISCORD_WEBHOOKURL}"
+      - "DIUN_NOTIF_DISCORD_MENTIONS=@everyone"
+      - "DIUN_NOTIF_DISCORD_TIMEOUT=10s"
+      - "DIUN_WATCH_HEALTHCHECKS_BASEURL=https://hc-ping.com/"
+      - "DIUN_WATCH_HEALTHCHECKS_UUID=${DIUN_WATCH_HEALTHCHECKS_UUID}"
+      - "DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT=true"
+    restart: unless-stopped

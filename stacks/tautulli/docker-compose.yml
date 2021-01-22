@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  tautulli:
+    image: ghcr.io/linuxserver/tautulli:latest
+    network_mode: host
+    container_name: tautulli
+    environment:
+      - PUID=1000
+      - PGID=1002
+      - TZ=Europe/London
+    volumes:
+      - ${DOCKER_DIR}/tautulli/config:/config
+      - ${DOCKER_DIR}/tautulli/logs:/logs
+    restart: unless-stopped

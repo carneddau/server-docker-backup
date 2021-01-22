@@ -1,0 +1,9 @@
+version: '3.3'
+services:
+  moviematch:
+    environment:
+      - 'PLEX_URL=${PLEX_URL}' 
+      - 'PLEX_TOKEN=${PLEX_TOKEN}'
+    ports:
+      - '8000:8000'
+    image: lukechannings/moviematch
