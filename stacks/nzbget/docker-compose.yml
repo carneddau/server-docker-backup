@@ -11,7 +11,7 @@ services:
     volumes:
       # ssd
       - ${DOCKER_DIR}/nzbget/config:/config
-      - ${INCOMPLETE_DIR}/usenet:/incomplete
+      - ${INCOMPLETE_DIR}/nzbget:/incomplete
       # hdd
       - ${MOUNT_POINT}/data_root/nzbget:/data_root/nzbget
     ports:
