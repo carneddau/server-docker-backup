@@ -1,6 +1,7 @@
 version: '3.3'
 services:
   moviematch:
+    container_name: moviematch
     environment:
       - 'PLEX_URL=${PLEX_URL}' 
       - 'PLEX_TOKEN=${PLEX_TOKEN}'
