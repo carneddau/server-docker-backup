@@ -15,7 +15,7 @@ services:
       # hdd
       - ${MOUNT_POINT}/data_root/nzbget:/data_root/nzbget
     ports:
-      - 6789:6789
+      - 127.0.0.1:6789:6789
     networks:
       - download
     restart: unless-stopped

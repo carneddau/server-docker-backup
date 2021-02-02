@@ -6,5 +6,5 @@ services:
       - 'PLEX_URL=${PLEX_URL}' 
       - 'PLEX_TOKEN=${PLEX_TOKEN}'
     ports:
-      - '8000:8000'
+      - '127.0.0.1:8000:8000'
     image: lukechannings/moviematch

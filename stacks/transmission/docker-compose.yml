@@ -40,14 +40,14 @@ services:
       - PUID=1000
       - PGID=1002
     ports:
-      - 9091:9091
+      - "127.0.0.1:9091:9091"
     networks:
       - download
 #  proxy:
 #    image: index.docker.io/haugene/transmission-openvpn-proxy
 #    container_name: proxy
 #    ports:
-#      - 8282:8080
+#      - 127.0.0.1:8282:8080
 #    volumes:
 #      - /etc/localtime:/etc/localtime:ro
 #    networks:

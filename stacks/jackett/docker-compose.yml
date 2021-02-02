@@ -12,7 +12,7 @@ services:
       - ${DOCKER_DIR}/jackett/config:/config
       - ${MOUNT_POINT}/data_root/transmission/complete:/downloads
     ports:
-      - 9117:9117
+      - 127.0.0.1:9117:9117
     networks:
       - download
     restart: unless-stopped

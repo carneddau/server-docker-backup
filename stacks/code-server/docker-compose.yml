@@ -16,5 +16,5 @@ services:
       - ${DOCKER_DIR}/code-server/config:/config
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
-      - 8443:8443
+      - 127.0.0.1:8443:8443
     restart: unless-stopped

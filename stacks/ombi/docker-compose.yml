@@ -1,0 +1,13 @@
+version: "2.1"
+services:
+  ombi:
+    image: ghcr.io/linuxserver/ombi:development
+    network_mode: host
+    container_name: ombi
+    environment:
+      - PUID=1000
+      - PGID=1002
+      - TZ=Europe/London
+    volumes:
+      - ${DOCKER_DIR}/ombi/config:/config
+    restart: unless-stopped
