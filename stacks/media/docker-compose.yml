@@ -1,0 +1,153 @@
+version: '2.1'
+services:
+  jackett:
+    image: ghcr.io/linuxserver/jackett
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1002
+      - TZ=Europe/London
+      - AUTO_UPDATE=true
+    volumes:
+      - ${DOCKER_DIR}/jackett/config:/config
+      - ${MOUNT_POINT}/data_root/transmission/complete:/downloads
+    ports:
+      - 127.0.0.1:9117:9117
+    networks:
+      - download
+    restart: unless-stopped
+
+  nzbget:
+    image: ghcr.io/linuxserver/nzbget
+    container_name: nzbget
+    environment:
+      - PUID=1000
+      - PGID=1002
+      - TZ=Europe/London
+      - UMASK_SET=002
+    volumes:
+      # ssd
+      - ${DOCKER_DIR}/nzbget/config:/config
+      - ${INCOMPLETE_DIR}/nzbget:/incomplete
+      # hdd
+      - ${MOUNT_POINT}/data_root/nzbget:/data_root/nzbget
+    ports:
+      - 127.0.0.1:6789:6789
+    networks:
+      - download
+    restart: unless-stopped
+
+  nzbhydra:
+    image: ghcr.io/linuxserver/nzbhydra2
+    container_name: nzbhydra
+    environment:
+      - PUID=1000
+      - PGID=1002
+      - UMASK=002
+      - TZ=Europe/London
+    volumes:
+      - ${DOCKER_DIR}/nzbhydra/config:/config
+      - ${MOUNT_POINT}/data_root/nzbhydra/downloads:/downloads
+    ports:
+      - 127.0.0.1:5076:5076
+    networks:
+      - download
+    restart: unless-stopped
+
+  radarr:
+    image: ghcr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1002
+      - TZ=Europe/London
+      - UMASK_SET=002
+    volumes:
+      - ${DOCKER_DIR}/radarr/config:/config
+      - ${MOUNT_POINT}/data_root:/data_root
+    ports:
+      - 127.0.0.1:7878:7878
+    networks:
+      - download
+    restart: unless-stopped
+
+  sonarr:
+    image: ghcr.io/linuxserver/sonarr:preview
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1002
+      - TZ=Europe/London
+      - UMASK_SET=002
+    volumes:
+      - ${DOCKER_DIR}/sonarr/config:/config
+      - ${MOUNT_POINT}/data_root:/data_root
+    ports:
+      - 127.0.0.1:8989:8989
+    networks:
+      - download
+    restart: unless-stopped
+
+  sabnzbd:
+    image: ghcr.io/linuxserver/sabnzbd
+    container_name: sabnzbd
+    environment:
+      - PUID=1000
+      - PGID=1002
+      - TZ=Europe/London
+    volumes:
+      - ${DOCKER_DIR}/sabnzbd/config:/config
+      - ${INCOMPLETE_DIR}/sabnzbd:/incomplete
+      - ${MOUNT_POINT}/data_root/sabnzbd:/data_root/sabnzbd
+    ports:
+      - 127.0.0.1:8080:8080
+    networks:
+      - download
+    restart: unless-stopped
+
+  transmission:
+    image: index.docker.io/haugene/transmission-openvpn
+    container_name: transmission
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    restart: unless-stopped
+    volumes:
+      # ssd
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_DIR}/transmission/data:/data
+      - ${INCOMPLETE_DIR}/torrent:/incomplete
+      # hdd
+      - ${MOUNT_POINT}/data_root/transmission:/data_root/transmission
+      - ${MOUNT_POINT}/media/films:/films
+      - ${MOUNT_POINT}/media/shows:/shows
+    environment:
+      - OPENVPN_PROVIDER=NORDVPN
+      - OPENVPN_USERNAME=${OPENVPN_USERNAME}
+      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+      - NORDVPN_COUNTRY=GB
+      - NORDVPN_CATEGORY=legacy_p2p
+      - NORDVPN_PROTOCOL=udp
+      - OPENVPN_OPTS=--inactive 3600 --ping 10 --ping-exit 60
+      - TRANSMISSION_WATCH_DIR_ENABLED=false
+      - TRANSMISSION_INCOMPLETE_DIR_ENABLED=true
+      - TRANSMISSION_INCOMPLETE_DIR=/incomplete
+      - TRANSMISSION_DOWNLOAD_DIR=/data_root/transmission/complete
+      - TRANSMISSION_PREALLOCATION=2
+      - TRANSMISSION_RATIO_LIMIT_ENABLED=true
+      - TRANSMISSION_SCRAPE_PAUSED_TORRENTS_ENABLED=false
+      - TRANSMISSION_RPC_AUTHENTICATION_REQUIRED=true
+      - TRANSMISSION_RPC_USERNAME=${TRANSMISSION_RPC_USERNAME}
+      - TRANSMISSION_RPC_PASSWORD=${TRANSMISSION_RPC_PASSWORD}
+      - TRANSMISSION_DOWNLOAD_QUEUE_ENABLED=false
+      - LOCAL_NETWORK=${LOCAL_NETWORK}
+      - PUID=1000
+      - PGID=1002
+    ports:
+      - "127.0.0.1:9091:9091"
+    networks:
+      - download
+networks:
+  download:
+    name: download
