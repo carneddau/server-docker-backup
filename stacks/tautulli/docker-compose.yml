@@ -11,4 +11,5 @@ services:
     volumes:
       - ${DOCKER_DIR}/tautulli/config:/config
       - ${DOCKER_DIR}/tautulli/logs:/logs
+      - ${PLEX_LOGS_DIR}:/plex_logs
     restart: unless-stopped
